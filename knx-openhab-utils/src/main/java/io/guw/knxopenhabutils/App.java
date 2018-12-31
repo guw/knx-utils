@@ -3,6 +3,8 @@ package io.guw.knxopenhabutils;
 import java.io.File;
 import java.util.concurrent.Callable;
 
+import io.guw.knxopenhabutils.knxproject.KnxProjectFile;
+
 import picocli.CommandLine;
 import picocli.CommandLine.Parameters;
 
