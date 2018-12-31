@@ -1,4 +1,4 @@
-package io.guw.knxopenhabutils.knxproject;
+package io.guw.knxopenhabutils.knxprojectparser.knxproj;
 
 public class GroupAddressRange {
 

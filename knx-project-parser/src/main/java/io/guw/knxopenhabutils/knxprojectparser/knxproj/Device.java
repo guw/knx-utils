@@ -1,4 +1,4 @@
-package io.guw.knxopenhabutils.knxproject;
+package io.guw.knxopenhabutils.knxprojectparser.knxproj;
 
 import java.util.ArrayList;
 import java.util.List;
