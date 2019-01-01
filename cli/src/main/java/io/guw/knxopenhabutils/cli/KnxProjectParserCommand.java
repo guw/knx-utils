@@ -1,9 +1,9 @@
-package io.guw.knxopenhabutils.knxprojectparser;
+package io.guw.knxopenhabutils.cli;
 
 import java.io.File;
 import java.util.concurrent.Callable;
 
-import io.guw.knxopenhabutils.knxprojectparser.knxproj.KnxProjectFile;
+import io.guw.knxopenhabutils.knxprojectparser.KnxProjectFile;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Parameters;

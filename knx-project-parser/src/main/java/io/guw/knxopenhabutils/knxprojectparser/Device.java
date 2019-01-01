@@ -1,4 +1,4 @@
-package io.guw.knxopenhabutils.knxprojectparser.knxproj;
+package io.guw.knxopenhabutils.knxprojectparser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,9 @@ import java.util.List;
 public class Device {
 
 	static String formatAsPhysicalAddress(Line line, String address) {
-		if ((address == null) || (line == null)) {
-			return address;
+		if ((address == null) || (line == null) || (line.getAddress() == null) || (line.getArea() == null)
+				|| (line.getArea().getAddress() == null)) {
+			return null;
 		}
 
 		return line.getArea().getAddress() + "." + line.getAddress() + "." + address;

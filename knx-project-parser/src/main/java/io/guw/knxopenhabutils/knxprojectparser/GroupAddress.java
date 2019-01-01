@@ -1,4 +1,4 @@
-package io.guw.knxopenhabutils.knxprojectparser.knxproj;
+package io.guw.knxopenhabutils.knxprojectparser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 public class GroupAddress {
 
 	static String formatAsThreePartAddress(int address) {
-		int part1 = address >> 11;
-		int part2 = (address >> 8) & 7;
+		int part1 = (address & 0x7800) >> 11;
+		int part2 = (address & 0x700) >> 8;
 		int part3 = address & 0xFF;
 
 		return part1 + "/" + part2 + "/" + part3;

@@ -1,4 +1,4 @@
-package io.guw.knxopenhabutils.knxprojectparser.knxproj;
+package io.guw.knxopenhabutils.knxprojectparser;
 
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
@@ -8,6 +8,7 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,22 @@ import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A simple reader/parser for <code>.knxproj</code> files exported from ETS.
+ * <p>
+ * After creating a {@link KnxProjectFile} instance it must be {@link #open()
+ * opened}. This will populate the object with data from the
+ * <code>.knxproj</code> file.
+ * </p>
+ * <p>
+ * A few limitations apply:
+ * <ul>
+ * <li>must be exported from a most recent ETS version</li>
+ * <li>only one project supported, i.e. only one project must be exported into
+ * the <code>.knxproj</code> file</li>
+ * </ul>
+ * </p>
+ */
 public class KnxProjectFile {
 
 	interface ChildElementHandler {
@@ -102,22 +119,62 @@ public class KnxProjectFile {
 
 	private final Map<String, GroupAddress> groupAddressById = new HashMap<>();
 
+	/**
+	 * Creates a new project file for the specified file.
+	 *
+	 * @param knxProjFile the <code>.knxproj</code> file to read
+	 */
 	public KnxProjectFile(File knxProjFile) {
 		file = knxProjFile;
 	}
 
+	/**
+	 * @return a list of devices read from the KNX project
+	 */
+	public List<Device> getDevices() {
+		return new ArrayList<>(devicesById.values());
+	}
+
+	/**
+	 * @return the underlying <code>.knxproj</code> file
+	 */
 	public File getFile() {
 		return file;
 	}
 
+	/**
+	 * @return a list of group addresses read from the KNX project
+	 */
+	public List<GroupAddress> getGroupAddresses() {
+		return new ArrayList<>(groupAddressById.values());
+	}
+
+	/**
+	 * @return the internal project id used within the <code>.knxproj</code> file
+	 */
 	public String getProjectId() {
 		return projectId;
 	}
 
+	/**
+	 * @return the project name
+	 */
 	public String getProjectName() {
 		return projectName;
 	}
 
+	/**
+	 * Parses the underlying {@link #getFile()} and populates this object with data.
+	 * <p>
+	 * Must only be called once. Calling this method more than once may result in
+	 * unexpected results. Callers should create a new instance instead.
+	 * </p>
+	 *
+	 * @throws IOException        in case of issues reading {@link #getFile() from
+	 *                            the file}
+	 * @throws XMLStreamException in case of parsing errors (eg., invalid or missing
+	 *                            data)
+	 */
 	public void open() throws IOException, XMLStreamException {
 		LOG.info("Reading project: {}", file);
 
@@ -232,7 +289,7 @@ public class KnxProjectFile {
 		});
 	}
 
-	void readElementChildren(XMLStreamReader streamReader, ChildElementHandler nestedElementHandler)
+	private void readElementChildren(XMLStreamReader streamReader, ChildElementHandler nestedElementHandler)
 			throws XMLStreamException {
 		readElementChildrenLevel++;
 		try {
@@ -369,7 +426,7 @@ public class KnxProjectFile {
 		// TODO
 	}
 
-	private void readProjectData(InputStream in) throws XMLStreamException {
+	void readProjectData(InputStream in) throws XMLStreamException {
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		XMLStreamReader streamReader = factory.createXMLStreamReader(in);
 
@@ -393,7 +450,7 @@ public class KnxProjectFile {
 		LOG.trace("Done reading project data.");
 	}
 
-	private void readProjectInfo(InputStream in) throws XMLStreamException {
+	void readProjectInfo(InputStream in) throws XMLStreamException {
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		XMLStreamReader streamReader = factory.createXMLStreamReader(in);
 
