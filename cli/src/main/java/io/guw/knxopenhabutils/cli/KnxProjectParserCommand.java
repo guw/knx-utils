@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.concurrent.Callable;
 
 import io.guw.knxopenhabutils.knxprojectparser.KnxProjectFile;
+import io.guw.knxopenhabutils.semanticanalyzer.GenericGermanyKnxProjectCharacteristics;
+import io.guw.knxopenhabutils.semanticanalyzer.KnxProjectAnalyzer;
+import io.guw.knxopenhabutils.semanticanalyzer.KnxProjectCharacteristics;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Parameters;
@@ -25,6 +28,11 @@ public class KnxProjectParserCommand implements Callable<Void> {
 
 		KnxProjectFile knxProjectFile = new KnxProjectFile(knxProjFile);
 		knxProjectFile.open();
+
+		KnxProjectCharacteristics characteristics = new GenericGermanyKnxProjectCharacteristics();
+
+		KnxProjectAnalyzer analyzer = new KnxProjectAnalyzer(knxProjectFile, characteristics);
+		analyzer.analyze();
 
 		return null;
 	}

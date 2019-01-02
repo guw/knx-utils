@@ -1,0 +1,6 @@
+
+# the following files must be downloaded manually
+# from https://github.com/uschindler/german-decompounder
+
+/de_DR.xml
+/dictionary-de.txt
