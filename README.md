@@ -18,4 +18,10 @@ The converter applies semantic processing on the exported KNX project.
 This semantic processing helps generating proper OpenHAB configuration files.
 It understands keywords (tags) used in names and descriptions of group addresses and device communication objects as well as patterns found in group addresses.
 
-Please help improve the semantic processing by submitting pull requests.
+### Status
+
+* This is a proof of concept. Lots of missing features.
+* Only German names/descriptions supported so far
+* No OpenHAB files generated yet. Still working on analyzing a KNX project.
+
+*Please help improve the semantic processing by submitting pull requests.*
