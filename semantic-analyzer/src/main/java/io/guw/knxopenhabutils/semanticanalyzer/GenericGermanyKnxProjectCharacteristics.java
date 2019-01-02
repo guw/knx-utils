@@ -54,6 +54,7 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 	@Override
 	public boolean isLight(GroupAddress ga) {
 		if ((null == ga.getName()) || ga.getName().isBlank()) {
+			LOG.warn("GA with blank/empty name should be fixed: {}", ga);
 			return false;
 		}
 

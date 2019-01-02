@@ -55,7 +55,7 @@ public class Device {
 
 	@Override
 	public String toString() {
-		return "Device [address=" + address + ", id=" + id + "]";
+		return "Device [" + address + ", " + ((name != null) && !name.isBlank() ? name : "<no name>") + "]";
 	}
 
 }

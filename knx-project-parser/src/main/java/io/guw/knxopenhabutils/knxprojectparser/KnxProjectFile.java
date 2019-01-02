@@ -129,7 +129,9 @@ public class KnxProjectFile {
 	}
 
 	/**
-	 * @return a list of devices read from the KNX project
+	 * @return a list of devices read from the KNX project (modifications to the
+	 *         devices themselves will reflect back; modifications to the list will
+	 *         not update anything in the project)
 	 */
 	public List<Device> getDevices() {
 		return new ArrayList<>(devicesById.values());
@@ -143,7 +145,9 @@ public class KnxProjectFile {
 	}
 
 	/**
-	 * @return a list of group addresses read from the KNX project
+	 * @return a list of group addresses read from the KNX project (modifications to
+	 *         the GAs themselves will reflect back; modifications to the list will
+	 *         not update anything in the project)
 	 */
 	public List<GroupAddress> getGroupAddresses() {
 		return new ArrayList<>(groupAddressById.values());

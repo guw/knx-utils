@@ -71,7 +71,8 @@ public class CommunicationObject {
 
 	@Override
 	public String toString() {
-		return "CommunicationObject [refId=" + refId + ", datapointType=" + datapointType + ", sendGroupAddressRefId="
-				+ sendGroupAddressRefId + "]";
+		return "CommunicationObject ["
+				+ ((description != null) && !description.isBlank() ? description : "<missing description>") + ", dpt "
+				+ datapointType + (readFlag ? ", READ" : "") + ", " + device + "]";
 	}
 }

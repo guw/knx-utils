@@ -16,11 +16,12 @@ public class GroupAddress {
 	private final GroupAddressRange groupAddressRange;
 	private final String id;
 	private final String address;
-	private final String name;
-	private final String description;
 	private final List<CommunicationObject> writingCommunicationObjects = new ArrayList<>();
 	private final List<CommunicationObject> listeningCommunicationObjects = new ArrayList<>();
-	private final String datapointType;
+
+	private String name;
+	private String description;
+	private String datapointType;
 
 	public GroupAddress(GroupAddressRange groupAddressRange, String id, int address, String name, String description,
 			String datapointType) {
@@ -64,9 +65,21 @@ public class GroupAddress {
 		return writingCommunicationObjects;
 	}
 
+	public void setDatapointType(String datapointType) {
+		this.datapointType = datapointType;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public String toString() {
-		return address + " [" + name + "]";
+		return address + " [" + name + ", dpt=" + datapointType + "]";
 	}
 
 }
