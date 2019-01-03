@@ -6,7 +6,7 @@ This project was created to easy the process of creating a configuration files f
 
 ## How to Test and Contribute
 
-0. Install OpenJDK 11, Maven 3.6 (or greater) and Git
+0. Install (if not already presen) **Java 11**, **Maven 3.6** (or greater) and **Git**
 
 1. Clone and build
 
