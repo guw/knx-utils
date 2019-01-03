@@ -4,6 +4,10 @@ sudo: false
 jdk:
 - openjdk11
 
+cache:
+  directories:
+    - "$HOME/.m2/repository"
+
 before_install:
 - wget https://archive.apache.org/dist/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.zip
 - unzip -qq apache-maven-3.6.0-bin.zip
@@ -16,5 +20,5 @@ install:
 - java --version
 
 script:
-- mvn verify 
+- mvn --update-snapshots verify 
 
