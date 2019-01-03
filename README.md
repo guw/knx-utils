@@ -3,6 +3,8 @@
 A set of utilities for working with the KNX binding in OpenHAB.
 This project was created to easy the process of creating a configuration files for the KNX binding.
 
+[![Build Status](https://travis-ci.org/guw/knx-openhab-utils.svg?branch=master)](https://travis-ci.org/guw/knx-openhab-utils)
+
 
 ## How to Test and Contribute
 
