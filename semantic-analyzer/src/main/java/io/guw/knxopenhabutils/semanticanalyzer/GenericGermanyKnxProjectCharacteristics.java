@@ -28,7 +28,7 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 
 	private final Map<GroupAddress, GroupAddressDocument> groupAddressIndex = new HashMap<>();
 
-	private Set<String> getTerms(GroupAddress ga, String text) throws IOException {
+	Set<String> getTerms(String text) throws IOException {
 		Set<String> terms = new HashSet<>();
 		try (TokenStream ts = germanAnalyzer.tokenStream("", text)) {
 			CharTermAttribute charTermAttribute = ts.addAttribute(CharTermAttribute.class);
@@ -44,7 +44,7 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 	private void index(GroupAddress ga) {
 		try {
 			GroupAddressDocument doc = new GroupAddressDocument();
-			doc.nameTerms = getTerms(ga, ga.getName());
+			doc.nameTerms = getTerms(ga.getName());
 			groupAddressIndex.put(ga, doc);
 		} catch (IOException e) {
 			LOG.warn("Caught exception indexing GA {}", ga, e);
@@ -65,6 +65,24 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 		}
 
 		return doc.nameTerms.contains("licht") || doc.nameTerms.contains("leucht");
+	}
+
+	@Override
+	public boolean isPrimarySwitch(GroupAddress ga) {
+		// pre-select based on super
+		boolean isPotentialPrimary = super.isPrimarySwitch(ga);
+		if (!isPotentialPrimary) {
+			return false;
+		}
+
+		// filter out addresses with similar name but not primary purpose (eg., status)
+		GroupAddressDocument doc = groupAddressIndex.get(ga);
+		if (doc == null) {
+			LOG.warn("No index available for GA: {}", ga);
+			return false;
+		}
+
+		return !doc.nameTerms.contains("status");
 	}
 
 	@Override

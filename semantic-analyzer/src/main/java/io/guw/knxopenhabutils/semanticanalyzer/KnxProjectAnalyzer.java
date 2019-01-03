@@ -33,8 +33,7 @@ public class KnxProjectAnalyzer {
 
 		// sanity check
 		if (((float) characteristics.getWarnings() / (float) groupAddresses.size()) > 0.25F) {
-			LOG.warn(
-					"The project data is of poor quality. The number of warnings logged during initial analysis exceeds threshold. Please consider improving the ETS data.");
+			LOG.warn("The project data generated a lot of warnings. Please consider improving the ETS data.");
 		}
 
 		// index all GAs
