@@ -9,18 +9,20 @@ import io.guw.knxopenhabutils.semanticanalyzer.KnxProjectAnalyzer;
 import io.guw.knxopenhabutils.semanticanalyzer.KnxProjectCharacteristics;
 
 import picocli.CommandLine;
+import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 
 /**
  * Converts a knxproj file to a set of files for openHAB.
  */
-public class KnxProjectParserCommand implements Callable<Void> {
+@Command(name = "knxconvert")
+public class KnxConvertCommand implements Callable<Void> {
 
 	public static void main(String[] args) {
-		CommandLine.call(new KnxProjectParserCommand(), args);
+		CommandLine.call(new KnxConvertCommand(), args);
 	}
 
-	@Parameters(index = "0", description = "The .knxproj file to convert.")
+	@Parameters(index = "0", description = "the .knxproj file to convert", paramLabel = "FILE")
 	private File knxProjFile;
 
 	@Override
