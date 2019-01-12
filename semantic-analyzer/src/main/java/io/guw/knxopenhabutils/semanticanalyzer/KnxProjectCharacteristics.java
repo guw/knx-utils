@@ -71,6 +71,76 @@ public abstract class KnxProjectCharacteristics {
 		}
 	}
 
+	/**
+	 * Finds a brightness group address for the specified group address.
+	 * <p>
+	 * The brightness group address can be used set a light's brightness level.
+	 * </p>
+	 * <p>
+	 * In order for this method to return anything at all, all group addresses will
+	 * be made available to the characteristics by calling {@link #learn(List)}.
+	 * </p>
+	 *
+	 * @param primarySwitchGroupAddress the switch GA (as identified by
+	 *                                  {@link #isPrimarySwitch(GroupAddress)}
+	 * @return the matching brightness address (maybe <code>null</code>)
+	 */
+	public abstract GroupAddress findMatchingBrightnessGroupAddress(GroupAddress primarySwitchGroupAddress);
+
+	/**
+	 * Finds a brightness status group address for the specified group address.
+	 * <p>
+	 * The brightness status group address reports back brightness status for a
+	 * group address. For
+	 * example, dimming the light or setting its brightness level would trigger a
+	 * status update
+	 * on the returned GA.
+	 * </p>
+	 * <p>
+	 * In order for this method to return anything at all, all group addresses will
+	 * be made available to the characteristics by calling {@link #learn(List)}.
+	 * </p>
+	 *
+	 * @param primarySwitchGroupAddress the switch GA (as identified by
+	 *                                  {@link #isPrimarySwitch(GroupAddress)}
+	 * @return the matching brightness status address (maybe <code>null</code>)
+	 */
+	public abstract GroupAddress findMatchingBrightnessStatusGroupAddress(GroupAddress primarySwitchGroupAddress);
+
+	/**
+	 * Finds a dim group address for the specified group address.
+	 * <p>
+	 * The dim group address can be used for dimming.
+	 * </p>
+	 * <p>
+	 * In order for this method to return anything at all, all group addresses will
+	 * be made available to the characteristics by calling {@link #learn(List)}.
+	 * </p>
+	 *
+	 * @param primarySwitchGroupAddress the switch GA (as identified by
+	 *                                  {@link #isPrimarySwitch(GroupAddress)}
+	 * @return the matching dim address (maybe <code>null</code>)
+	 */
+	public abstract GroupAddress findMatchingDimGroupAddress(GroupAddress primarySwitchGroupAddress);
+
+	/**
+	 * Finds a status group address for the specified group address.
+	 * <p>
+	 * The status group address reports back status for a group address. For
+	 * example, switching a the specified GA on or off would trigger a status update
+	 * on the returned GA.
+	 * </p>
+	 * <p>
+	 * In order for this method to return anything at all, all group addresses will
+	 * be made available to the characteristics by calling {@link #learn(List)}.
+	 * </p>
+	 *
+	 * @param primarySwitchGroupAddress the switch GA (as identified by
+	 *                                  {@link #isPrimarySwitch(GroupAddress)}
+	 * @return the matching status address (maybe <code>null</code>)
+	 */
+	public abstract GroupAddress findMatchingStatusGroupAddress(GroupAddress primarySwitchGroupAddress);
+
 	int getWarnings() {
 		return warnings;
 	}
@@ -124,7 +194,9 @@ public abstract class KnxProjectCharacteristics {
 	 * Submits a GA to the characteristics for learning purposes.
 	 * <p>
 	 * The characteristics implementation may build an index of the GAs for more
-	 * efficient processing.
+	 * efficient processing. Such an index may be used by <code>find...</code>
+	 * methods and other
+	 * methods in this class.
 	 * </p>
 	 *
 	 * @param groupAddresses list of addresses to learn

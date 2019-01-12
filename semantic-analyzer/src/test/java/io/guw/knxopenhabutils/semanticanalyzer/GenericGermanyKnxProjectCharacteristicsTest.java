@@ -1,5 +1,8 @@
 package io.guw.knxopenhabutils.semanticanalyzer;
 
+import static io.guw.knxopenhabutils.knxprojectparser.DatapointType.State;
+import static io.guw.knxopenhabutils.knxprojectparser.DatapointType.Switch;
+import static io.guw.knxopenhabutils.knxprojectparser.GroupAddress.getCombindedAddress;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,8 +17,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import io.guw.knxopenhabutils.knxprojectparser.DatapointType;
 import io.guw.knxopenhabutils.knxprojectparser.GroupAddress;
+import io.guw.knxopenhabutils.knxprojectparser.GroupAddressRange;
 
 public class GenericGermanyKnxProjectCharacteristicsTest {
 
@@ -39,14 +42,47 @@ public class GenericGermanyKnxProjectCharacteristicsTest {
 								terms.stream().collect(joining(" ")))));
 	}
 
+	@Test
+	public void calculatePrefixMatchRatio() throws Exception {
+		assertTrue(
+				0.6F <= characteristics.calculatePrefixMatchRatio("Licht Küche Status Ein/Aus", "Licht Küche Ein/Aus"));
+	}
+
+	@Test
+	public void findMatchingStatusGroupAddress_pattern_block() throws Exception {
+		GroupAddress primary = ga(1, 0, 1, "Licht Küche Ein/Aus", Switch.getValue());
+		GroupAddress status = ga(1, 0, 4, "Licht Küche Status", State.getValue());
+		assertEquals(status, characteristics.findMatchingStatusGroupAddress(primary));
+	}
+
+	@Test
+	public void findMatchingStatusGroupAddress_pattern_group() throws Exception {
+		GroupAddressRange lightsRange = new GroupAddressRange(null, null, 2048, 4095, "Lichter", null);
+		GroupAddressRange statusRange = new GroupAddressRange(null, null, 20480, 22527, "Rückmelde-/Statusobjekte",
+				null);
+
+		GroupAddress primary = ga(lightsRange, 1, 0, 1, "Licht Küche Ein/Aus", Switch.getValue());
+		GroupAddress status = ga(statusRange, 10, 0, 1, "Licht Küche Status", State.getValue());
+		assertEquals(status, characteristics.findMatchingStatusGroupAddress(primary));
+	}
+
+	private GroupAddress ga(GroupAddressRange range, int part1, int part2, int part3, String name, String dpt) {
+		GroupAddress groupAddress = new GroupAddress(range, null, getCombindedAddress(part1, part2, part3), name, null,
+				dpt);
+		characteristics.learn(List.of(groupAddress));
+		return groupAddress;
+	}
+
+	private GroupAddress ga(int part1, int part2, int part3, String name, String dpt) {
+		return ga(null, part1, part2, part3, name, dpt);
+	}
+
 	private GroupAddress gaWithName(String name) {
-		return gaWithNameAndDpt(name, DatapointType.Switch.getValue());
+		return gaWithNameAndDpt(name, Switch.getValue());
 	}
 
 	private GroupAddress gaWithNameAndDpt(String name, String dpt) {
-		GroupAddress groupAddress = new GroupAddress(null, null, 0, name, null, dpt);
-		characteristics.learn(List.of(groupAddress));
-		return groupAddress;
+		return ga(1, 0, 1, name, dpt);
 	}
 
 	@Test
@@ -62,6 +98,10 @@ public class GenericGermanyKnxProjectCharacteristicsTest {
 		assertTerms("Spiegellicht", "spiegel", "licht", "spiegellicht");
 
 		assertTerms("Licht Küche Status Ein/Aus", "status", "licht", "kuch");
+
+		assertTerms("Rückmeldungen Schalten", "schalt", "ruckmeldung", "ruck");
+
+		assertTerms("Rückmelde-/Statusobjekte", "ruckmeld", "ruck", "statusobjekt", "objekt", "status", "meld");
 	}
 
 	@Test
@@ -79,9 +119,16 @@ public class GenericGermanyKnxProjectCharacteristicsTest {
 	}
 
 	@Test
+	public void isMatchingStatus() throws Exception {
+		assertTrue(
+				characteristics.isMatchingStatus(gaWithName("Licht Küche Status"), gaWithName("Licht Küche Ein/Aus")));
+	}
+
+	@Test
 	public void isPrimarySwitch() throws Exception {
 		assertTrue(characteristics.isPrimarySwitch(gaWithName("Licht Küche Ein/Aus")));
 		assertFalse(characteristics.isPrimarySwitch(gaWithName("Licht Küche Status Ein/Aus")));
+		assertFalse(characteristics.isPrimarySwitch(gaWithName("Rückmeldungen Schalten Licht")));
 	}
 
 	@BeforeEach

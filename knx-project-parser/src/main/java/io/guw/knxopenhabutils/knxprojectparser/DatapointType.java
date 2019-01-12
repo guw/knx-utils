@@ -19,6 +19,10 @@ public enum DatapointType {
 
 	State("1.011"),
 
+	ControlDimming("3.007"),
+
+	Scaling("5.001"),
+
 	// @formatter:on
 	;
 

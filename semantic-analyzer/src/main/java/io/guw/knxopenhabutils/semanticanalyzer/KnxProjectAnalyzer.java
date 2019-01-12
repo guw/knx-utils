@@ -2,6 +2,7 @@ package io.guw.knxopenhabutils.semanticanalyzer;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ public class KnxProjectAnalyzer {
 
 	private final KnxProjectFile knxProjectFile;
 	private final KnxProjectCharacteristics characteristics;
+	private final List<Light> lights = new ArrayList<>();
 
 	public KnxProjectAnalyzer(KnxProjectFile knxProjectFile, KnxProjectCharacteristics characteristics) {
 		this.knxProjectFile = knxProjectFile;
@@ -51,13 +53,28 @@ public class KnxProjectAnalyzer {
 		primaryLightGroupAddresses.forEach(this::analyzeLight);
 
 		System.out.println("Lights:");
-		primaryLightGroupAddresses.forEach(System.out::println);
+		lights.forEach(System.out::println);
 
 		// find shutters
+
 	}
 
 	private void analyzeLight(GroupAddress ga) {
+		GroupAddress statusGa = characteristics.findMatchingStatusGroupAddress(ga);
+		if (statusGa == null) {
+			return;
+		}
 
+		GroupAddress dimGa = characteristics.findMatchingDimGroupAddress(ga);
+		GroupAddress brightnessGa = characteristics.findMatchingBrightnessGroupAddress(ga);
+		GroupAddress brightnessStatusGa = characteristics.findMatchingBrightnessStatusGroupAddress(ga);
+		if ((dimGa != null) && (brightnessGa != null) && (brightnessStatusGa != null)) {
+			// use dimmable light
+			lights.add(new DimmableLight(ga, statusGa, dimGa, brightnessGa, brightnessStatusGa));
+		} else {
+			// go with simple light
+			lights.add(new Light(ga, statusGa));
+		}
 	}
 
 	public KnxProjectCharacteristics getCharacteristics() {

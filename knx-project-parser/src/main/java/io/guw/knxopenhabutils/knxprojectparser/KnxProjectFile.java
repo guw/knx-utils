@@ -394,10 +394,22 @@ public class KnxProjectFile {
 	private void readGroupAddressRange(XMLStreamReader streamReader, GroupAddressRange parent)
 			throws XMLStreamException {
 		String id = streamReader.getAttributeValue(null, "Id");
-		String start = streamReader.getAttributeValue(null, "RangeStart");
-		String end = streamReader.getAttributeValue(null, "RangeEnd");
 		String name = streamReader.getAttributeValue(null, "Name");
 		String description = streamReader.getAttributeValue(null, "Description");
+
+		int start;
+		try {
+			start = Integer.parseInt(streamReader.getAttributeValue(null, "RangeStart"));
+		} catch (NumberFormatException e) {
+			throw new XMLStreamException("Invalid RangeStart.", streamReader.getLocation(), e);
+		}
+
+		int end;
+		try {
+			end = Integer.parseInt(streamReader.getAttributeValue(null, "RangeEnd"));
+		} catch (NumberFormatException e) {
+			throw new XMLStreamException("Invalid RangeEnd.", streamReader.getLocation(), e);
+		}
 
 		var groupAddressRange = new GroupAddressRange(parent, id, start, end, name, description);
 
