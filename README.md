@@ -61,3 +61,68 @@ cd <.../>knx-openhab-utils/semantic-analyzer
 mvn -Pdownload-german-data generate-sources
 ```
 
+## Analysis of Group Addresses
+
+During analysis phase all group addresses will be analyzed. The analysis will identify lights, switches, dimmers, rollershutters, thermostats, etc. There is a heuristic that tries to identify all of this based on GA names, descriptions, connections, location and GA parent groups. However, this is not always sufficient. If you encounter deficiencies please contribute solutions!
+
+### Languages
+
+The tool is capable of supporting multiple languages. However, at this time only German language support is implemented. Please contribute support for your language!
+
+### Patterns
+
+The analysis detects best practices as defined by KNX.org (eg., *"KNX Projektrichtlinien"*).
+
+### Devices Categories
+
+As part of the analysis, a GA will be annotated with a device category. In order to detect a category, *only* a GA names will be considered. The following table gives an introduction what is supported.
+
+The logic is: GA name contains '<term>' *or* GA name starts with '<prefix>' *or* GA descriptions contains '[tag]'
+
+| Category | Terms (DE, case-insensitive)           | Prefix (DE, exact case) | Tags (DE, exact case) |
+|----------|----------------------------------------|-------------------------|-----------------------|
+| Light    | Lampe, Leuchte, Licht, Beleuchtung, Spots, Strahler (und zusammengesetzte Varianten)  | `L_`, `LD_` | `[Licht]`  |
+
+
+#### Block of GAs
+
+If a primary GA for a function is detected, the following blocks will be searched for related group addresses.
+
+**Lights**
+
+| GA      | Function                      | DPT   | Detected Suffixes (DE)      |
+|---------|-------------------------------|-------|-----------------------------|
+| x/y/z   | Switch (on/off)               | 1.001 | E/A, Ein/Aus                |
+| x/y/z+1 | Dimming (brighter/darker)     | 3.007 | DIM, Dimmen, Heller/Dunkler |
+| x/y/z+2 | Brightness (0..100%)          | 5.001 | WERT, Helligkeitswert       |
+| x/y/z+3 | State of switch (on/off)      | 1.011 | RM, Status                  |
+| x/y/z+4 | State if brightness (0..100%) | 5.001 | RM WERT, Status Wert        |
+
+**Shutter**
+
+| GA      | Function                   | DPT   | Detected Suffixes (DE) |
+|---------|----------------------------|-------|------------------------|
+| x/y/z   | Up/down                    | 1.001 |                   |
+| x/y/z+1 | Stop                       |       |                   |
+| x/y/z+2 | Position shutter (0..100%) |       |                   |
+| x/y/z+3 | Position blade (0..100%)   |       |                   |
+| x/y/z+4 | Shadow                     |       |                   |
+| x/y/z+5 | Disable                    |       |                   |
+| x/y/z+6 | State position shutter     |       |                   |
+| x/y/z+7 | State position blade       |       |                   |
+
+**Heating**
+
+| GA      | Function                 | DPT | Detected Suffixes (DE) |
+|---------|--------------------------|-----|------------------------|
+| x/y/z   | Value                    |     |                   |
+| x/y/z+1 | Actual temperature       |     |                   |
+| x/y/z+2 | Base wanted temperature  |     |                   |
+| x/y/z+3 | State                    |     |                   |
+| x/y/z+4 | State wanted temperature |     |                   |
+| x/y/z+5 | ...                      |     |                   |
+| x/y/z+6 | ...                      |     |                   |
+| x/y/z+7 | ...                      |     |                   |
+| x/y/z+8 | ...                      |     |                   |
+| x/y/z+9 | State mode               |     |                   |
+

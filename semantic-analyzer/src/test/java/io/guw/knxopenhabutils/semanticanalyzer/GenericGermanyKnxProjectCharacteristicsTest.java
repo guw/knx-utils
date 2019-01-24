@@ -92,10 +92,22 @@ public class GenericGermanyKnxProjectCharacteristicsTest {
 
 		assertSingleTerm("Leuchte", "leucht");
 
+		assertSingleTerm("Lampe", "lamp");
+
+		assertSingleTerm("Strahler", "strahl");
+		assertSingleTerm("Spots", "spot");
+
 		assertSingleTerm("Status", "status");
+
+		assertTerms("Deckenleuchte", "deck", "leucht", "deckenleucht");
+		assertTerms("Deckenlampe", "deck", "lamp", "deckenlamp");
+
+		assertTerms("Einbaustrahler", "einbaustrahl", "strahl", "einbau");
 
 		assertTrue(characteristics.getTerms("Spiegellicht").contains("licht"));
 		assertTerms("Spiegellicht", "spiegel", "licht", "spiegellicht");
+
+		assertTrue(characteristics.getTerms("Beleuchtung").contains("beleuchtung"));
 
 		assertTerms("Licht Küche Status Ein/Aus", "status", "licht", "kuch");
 
@@ -116,6 +128,16 @@ public class GenericGermanyKnxProjectCharacteristicsTest {
 		assertTrue(characteristics.isLight(gaWithName("Spiegellicht")));
 
 		assertTrue(characteristics.isLight(gaWithName("Leuchte")));
+		assertTrue(characteristics.isLight(gaWithName("Deckenleuchte")));
+		assertTrue(characteristics.isLight(gaWithName("indirekte Beleuchtung")));
+
+		assertTrue(characteristics.isLight(gaWithName("Lampe")));
+		assertTrue(characteristics.isLight(gaWithName("Wandlampe")));
+		assertTrue(characteristics.isLight(gaWithName("Lampe Wohnzimmer")));
+
+		assertTrue(characteristics.isLight(gaWithName("Strahler Decke")));
+		assertTrue(characteristics.isLight(gaWithName("Einbaustrahler XYZ")));
+		assertTrue(characteristics.isLight(gaWithName("Spots XYZ")));
 	}
 
 	@Test

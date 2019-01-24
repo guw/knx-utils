@@ -37,6 +37,8 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 	private static final Logger LOG = LoggerFactory.getLogger(GenericGermanyKnxProjectCharacteristics.class);
 
 	private static final Analyzer germanAnalyzer = new GermanAnalyzerWithDecompounder();
+	private static final Set<String> lightIdentifyingTerms = Set.of("licht", "leucht", "beleuchtung", "lamp", "spot",
+			"strahl");
 
 	private final Map<GroupAddress, GroupAddressDocument> groupAddressIndex = new HashMap<>();
 	private final Map<GroupAddressRange, GroupAddressDocument> groupAddressRangeIndex = new HashMap<>();
@@ -205,7 +207,7 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 			return false;
 		}
 
-		return doc.nameTerms.contains("licht") || doc.nameTerms.contains("leucht");
+		return doc.nameTerms.parallelStream().filter((s) -> lightIdentifyingTerms.contains(s)).findAny().isPresent();
 	}
 
 	boolean isMatchingStatus(GroupAddress candidate, GroupAddress primarySwitchGroupAddress) {
