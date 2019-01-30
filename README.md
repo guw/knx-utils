@@ -86,7 +86,7 @@ As part of the analysis, a GA will be annotated with a device category.
 In order to detect a category, GA names and description will be considered.
 The following table gives an introduction what is supported.
 
-The logic is: GA name contains '<term>' *or* GA name starts with '<prefix>' *or* GA descriptions contains '[tag]'
+The logic is: GA name contains `<term>` *or* GA name starts with `<prefix>` *or* GA descriptions contains `[tag]`
 
 | Category | Terms (DE, case-insensitive)                      | Prefix (DE, exact case) | Tags (DE, exact case) |
 |----------|---------------------------------------------------|-------------------------|-----------------------|
