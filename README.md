@@ -63,32 +63,47 @@ mvn -Pdownload-german-data generate-sources
 
 ## Analysis of Group Addresses
 
-During analysis phase all group addresses will be analyzed. The analysis will identify lights, switches, dimmers, rollershutters, thermostats, etc. There is a heuristic that tries to identify all of this based on GA names, descriptions, connections, location and GA parent groups. However, this is not always sufficient. If you encounter deficiencies please contribute solutions!
+During analysis phase all group addresses will be analyzed.
+The analysis will identify lights, switches, dimmers, rollershutters, thermostats, etc.
+There is a heuristic that tries to identify all of this based on GA names, descriptions, connections, location and GA parent groups.
+However, this is not always sufficient. If you encounter deficiencies please contribute solutions!
 
 ### Languages
 
-The tool is capable of supporting multiple languages. However, at this time only German language support is implemented. Please contribute support for your language!
+The tool is capable of supporting multiple languages.
+At this time only the German language support is implemented.
+Please contribute support for your language!
 
 ### Patterns
 
-The analysis detects best practices as defined by KNX.org (eg., *"KNX Projektrichtlinien"*).
+The analysis is mostly based on best practices as defined by KNX.org (eg., *"KNX Projektrichtlinien"*).
+These best practices define patterns (*"charachteristics"*) of a KNX project.
+If you would like to see additional characteristics being supported, please contribute an implementation of `KnxProjectCharacteristics`.
 
 ### Devices Categories
 
-As part of the analysis, a GA will be annotated with a device category. In order to detect a category, *only* a GA names will be considered. The following table gives an introduction what is supported.
+As part of the analysis, a GA will be annotated with a device category.
+In order to detect a category, GA names and description will be considered.
+The following table gives an introduction what is supported.
 
 The logic is: GA name contains '<term>' *or* GA name starts with '<prefix>' *or* GA descriptions contains '[tag]'
 
-| Category | Terms (DE, case-insensitive)           | Prefix (DE, exact case) | Tags (DE, exact case) |
-|----------|----------------------------------------|-------------------------|-----------------------|
-| Light    | Lampe, Leuchte, Licht, Beleuchtung, Spots, Strahler (und zusammengesetzte Varianten)  | `L_`, `LD_` | `[Licht]`  |
+| Category | Terms (DE, case-insensitive)                      | Prefix (DE, exact case) | Tags (DE, exact case) |
+|----------|---------------------------------------------------|-------------------------|-----------------------|
+| Light    | Lampe, Leuchte, Licht, Beleuchtung, Spots, Strahler (und zusammengesetzte Varianten)  | `L_`, `LD_`, `LDA_` | `[Licht]`  |
+| Shutter  | Rollo, Rollladen (und weitere Varianten)          | `R_`                    | `[Rollo]`              |
+| Heating  | Heizung (und  Varianten)                          | `H_`                    | `[Heizung]`            |
 
+*Note: detection of additional functionality (eg., such as "a dimmable light") will be based on the availability of related GAs.*
+If you have any suggestions for improvement, please don't hesitate and contribute.
 
 #### Block of GAs
 
-If a primary GA for a function is detected, the following blocks will be searched for related group addresses.
+Once a device category is known, its primary GA and related GAs will be detected.
+This detection happens based on GA DPT and name analysis.
+As per recommendation of KNX.org, the following blocks will be searched once a primary GA is detected.
 
-**Lights**
+**Lights **
 
 | GA      | Function                      | DPT   | Detected Suffixes (DE)      |
 |---------|-------------------------------|-------|-----------------------------|

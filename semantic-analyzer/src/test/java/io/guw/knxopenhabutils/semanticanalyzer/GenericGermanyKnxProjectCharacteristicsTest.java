@@ -67,18 +67,27 @@ public class GenericGermanyKnxProjectCharacteristicsTest {
 	}
 
 	private GroupAddress ga(GroupAddressRange range, int part1, int part2, int part3, String name, String dpt) {
-		GroupAddress groupAddress = new GroupAddress(range, null, getCombindedAddress(part1, part2, part3), name, null,
-				dpt);
+		return ga(range, part1, part2, part3, name, null, dpt);
+	}
+
+	private GroupAddress ga(GroupAddressRange range, int part1, int part2, int part3, String name, String description,
+			String dpt) {
+		GroupAddress groupAddress = new GroupAddress(range, null, getCombindedAddress(part1, part2, part3), name,
+				description, dpt);
 		characteristics.learn(List.of(groupAddress));
 		return groupAddress;
 	}
 
 	private GroupAddress ga(int part1, int part2, int part3, String name, String dpt) {
-		return ga(null, part1, part2, part3, name, dpt);
+		return ga(null, part1, part2, part3, name, null, dpt);
 	}
 
 	private GroupAddress gaWithName(String name) {
 		return gaWithNameAndDpt(name, Switch.getValue());
+	}
+
+	private GroupAddress gaWithNameAndDescription(String name, String description) {
+		return ga(null, 1, 0, 1, name, description, Switch.getValue());
 	}
 
 	private GroupAddress gaWithNameAndDpt(String name, String dpt) {
@@ -138,6 +147,12 @@ public class GenericGermanyKnxProjectCharacteristicsTest {
 		assertTrue(characteristics.isLight(gaWithName("Strahler Decke")));
 		assertTrue(characteristics.isLight(gaWithName("Einbaustrahler XYZ")));
 		assertTrue(characteristics.isLight(gaWithName("Spots XYZ")));
+
+		assertTrue(characteristics.isLight(gaWithName("L_EG01_01")));
+		assertTrue(characteristics.isLight(gaWithName("LD_EG01_01")));
+		assertTrue(characteristics.isLight(gaWithName("LDA_EG01_01")));
+
+		assertTrue(characteristics.isLight(gaWithNameAndDescription("XYZ", "blah ... [Licht]...")));
 	}
 
 	@Test

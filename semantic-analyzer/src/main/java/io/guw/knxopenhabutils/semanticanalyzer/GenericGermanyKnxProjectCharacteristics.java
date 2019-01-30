@@ -28,6 +28,11 @@ import io.guw.knxopenhabutils.knxprojectparser.GroupAddress;
 import io.guw.knxopenhabutils.knxprojectparser.GroupAddressRange;
 import io.guw.knxopenhabutils.semanticanalyzer.luceneext.GermanAnalyzerWithDecompounder;
 
+/**
+ * Characteristics typically found in a KNX project using German language and
+ * following best practises as published by KNX.org (aka. "KNX
+ * Projektrichtlinien").
+ */
 public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacteristics {
 
 	public static class GroupAddressDocument {
@@ -39,6 +44,7 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 	private static final Analyzer germanAnalyzer = new GermanAnalyzerWithDecompounder();
 	private static final Set<String> lightIdentifyingTerms = Set.of("licht", "leucht", "beleuchtung", "lamp", "spot",
 			"strahl");
+	private static final List<String> lightIdentifyingPrefixes = List.of("L_", "LD_", "LDA_");
 
 	private final Map<GroupAddress, GroupAddressDocument> groupAddressIndex = new HashMap<>();
 	private final Map<GroupAddressRange, GroupAddressDocument> groupAddressRangeIndex = new HashMap<>();
@@ -58,6 +64,10 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 
 	private boolean containsStatusTerm(Set<String> terms) {
 		return terms.contains("status") || terms.contains("ruckmeldung");
+	}
+
+	private boolean descriptionContainsTag(GroupAddress ga, String tag) {
+		return (ga.getDescription() != null) && ga.getDescription().contains(tag);
 	}
 
 	@Override
@@ -207,7 +217,8 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 			return false;
 		}
 
-		return doc.nameTerms.parallelStream().filter((s) -> lightIdentifyingTerms.contains(s)).findAny().isPresent();
+		return nameContainsTerms(doc, lightIdentifyingTerms) || nameStartsWith(ga, lightIdentifyingPrefixes)
+				|| descriptionContainsTag(ga, "[Licht]");
 	}
 
 	boolean isMatchingStatus(GroupAddress candidate, GroupAddress primarySwitchGroupAddress) {
@@ -275,6 +286,14 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 			index(ga);
 			groupAddressByThreePartAddress.put(ga.getAddress(), ga);
 		}
+	}
+
+	private boolean nameContainsTerms(GroupAddressDocument doc, Set<String> terms) {
+		return doc.nameTerms.parallelStream().filter((s) -> terms.contains(s)).findAny().isPresent();
+	}
+
+	private boolean nameStartsWith(GroupAddress ga, List<String> prefix) {
+		return prefix.parallelStream().filter((p) -> ga.getName().startsWith(p)).findAny().isPresent();
 	}
 
 }
