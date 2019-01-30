@@ -103,7 +103,7 @@ Once a device category is known, its primary GA and related GAs will be detected
 This detection happens based on GA DPT and name analysis.
 As per recommendation of KNX.org, the following blocks will be searched once a primary GA is detected.
 
-**Lights **
+**Lights**
 
 | GA      | Function                      | DPT   | Detected Suffixes (DE)      |
 |---------|-------------------------------|-------|-----------------------------|
