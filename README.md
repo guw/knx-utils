@@ -76,7 +76,7 @@ Please contribute support for your language!
 
 ### Patterns
 
-The analysis is mostly based on best practices as defined by KNX.org (eg., *"KNX Projektrichtlinien"*).
+The analysis is mostly based on best practices as defined by KNX.org (eg., *"[KNX Projektrichtlinien (KNX-Project-Design-Guidelines_de.pdf)](https://www.knx.org/wGlobal/wGlobal/scripts/accessDocument.php?forceDownload=0&document=%2FwAssets%2Fdocs%2Fdownloads%2FMarketing%2FFlyers%2FKNX-Project-Design-Guidelines%2FKNX-Project-Design-Guidelines_de.pdf)"*).
 These best practices define patterns (*"charachteristics"*) of a KNX project.
 If you would like to see additional characteristics being supported, please contribute an implementation of `KnxProjectCharacteristics`.
 
