@@ -7,8 +7,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.guw.knx-openhab-utils</groupId>
-    <artifactId>knx-openhab-utils</artifactId>
+    <groupId>io.guw.knx-utils</groupId>
+    <artifactId>knx-utils</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
@@ -18,12 +18,12 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.guw.knx-openhab-utils</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>knx-project-parser</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>io.guw.knx-openhab-utils</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>semantic-analyzer</artifactId>
       <version>${project.version}</version>
     </dependency>

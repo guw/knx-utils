@@ -5,8 +5,8 @@
 >
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.guw.knx-openhab-utils</groupId>
-  <artifactId>knx-openhab-utils</artifactId>
+  <groupId>io.guw.knx-utils</groupId>
+  <artifactId>knx-utils</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
