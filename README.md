@@ -1,9 +1,8 @@
-# knx-openhab-utils
+# knx-utils
 
-A set of utilities for working with the KNX binding in OpenHAB.
-This project was created to easy the process of creating a configuration files for the KNX binding.
-
-[![Build Status](https://travis-ci.org/guw/knx-openhab-utils.svg?branch=master)](https://travis-ci.org/guw/knx-openhab-utils)
+A set of utilities for working with the KNX bindings/integrations in OpenHAB and Home Assistant.
+This project was created to easy the process of creating a configuration files for the OpenHAB KNX binding.
+It also allows to create configuration files for Home Assistant.
 
 
 ## How to Test and Contribute
@@ -13,17 +12,17 @@ This project was created to easy the process of creating a configuration files f
 1. Clone and build
 
 ```
-git clone git@github.com:guw/knx-openhab-utils.git
-cd knx-openhab-utils
+git clone git@github.com:guw/knx-utils.git
+cd knx-utils
 mvn clean verify
 ```
 
-2. Open in your favorite IDE (eg., in Eclipse via *File > Import... > Existing Maven Projects*, point *Root Directory* to `knx-openhab-utils`)
+2. Open in your favorite IDE (eg., in Eclipse via *File > Import... > Existing Maven Projects*, point *Root Directory* to `knx-utils`)
 
-3. Run `knx-openhab-utils/cli/src/main/java/io/guw/knxopenhabutils/cli/KnxConvertCommand.java` with its `main` method
+3. Run `knx-utils/cli/src/main/java/io/guw/knxopenhabutils/cli/KnxConvertCommand.java` with its `main` method
 
 ```
-java -jar cli/target/knx-openhab-utils-cli.jar
+java -jar cli/target/knx-utils-cli.jar
 ```
 
 ## ETS Project Converter
@@ -57,7 +56,7 @@ In order to use enhanced language features dictionaries need to be downloaded fr
 They cannot be distributed due to licensing concerns.
 
 ```
-cd <.../>knx-openhab-utils/semantic-analyzer
+cd <.../>knx-utils/semantic-analyzer
 mvn -Pdownload-german-data generate-sources
 ```
 
@@ -66,7 +65,8 @@ mvn -Pdownload-german-data generate-sources
 During analysis phase all group addresses will be analyzed.
 The analysis will identify lights, switches, dimmers, rollershutters, thermostats, etc.
 There is a heuristic that tries to identify all of this based on GA names, descriptions, connections, location and GA parent groups.
-However, this is not always sufficient. If you encounter deficiencies please contribute solutions!
+However, this is not always sufficient. 
+If you encounter deficiencies please contribute solutions!
 
 ### Languages
 
