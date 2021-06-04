@@ -4,6 +4,8 @@ A set of utilities for working with the KNX bindings/integrations in OpenHAB and
 This project was created to easy the process of creating a configuration files for the OpenHAB KNX binding.
 It also allows to create configuration files for Home Assistant.
 
+[![Branch & PR Validation](https://github.com/guw/knx-utils/actions/workflows/build.yml/badge.svg)](https://github.com/guw/knx-utils/actions/workflows/build.yml)
+
 
 ## How to Test and Contribute
 
