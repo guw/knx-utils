@@ -19,7 +19,9 @@ import picocli.CommandLine.Parameters;
 public class KnxConvertCommand implements Callable<Void> {
 
 	public static void main(String[] args) {
-		CommandLine.call(new KnxConvertCommand(), args);
+		CommandLine cmd = new CommandLine(new KnxConvertCommand());
+		int exitCode = cmd.execute(args);
+		System.exit(exitCode);
 	}
 
 	@Parameters(index = "0", description = "the .knxproj file to convert", paramLabel = "FILE")
