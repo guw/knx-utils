@@ -14,7 +14,7 @@
 
   <artifactId>cli</artifactId>
 
-  <name>KNX OpenHAB Utils :: Command Line</name>
+  <name>KNX Utils :: Command Line</name>
 
   <dependencies>
     <dependency>
@@ -62,7 +62,7 @@
               <archive>
                 <manifest>
                   <mainClass>
-                    io.guw.knxopenhabutils.cli.KnxConvertCommand
+                    io.guw.knxutils.cli.KnxConvertCommand
                   </mainClass>
                 </manifest>
               </archive>
@@ -70,7 +70,7 @@
                 <descriptorRef>jar-with-dependencies</descriptorRef>
               </descriptorRefs>
               <appendAssemblyId>false</appendAssemblyId>
-              <finalName>knx-openhab-utils-cli</finalName>
+              <finalName>knx-utils-cli</finalName>
             </configuration>
           </execution>
         </executions>

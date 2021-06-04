@@ -1,4 +1,4 @@
-package io.guw.knxopenhabutils.semanticanalyzer;
+package io.guw.knxutils.semanticanalyzer;
 
 import static java.util.stream.Collectors.toList;
 
@@ -8,8 +8,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.guw.knxopenhabutils.knxprojectparser.GroupAddress;
-import io.guw.knxopenhabutils.knxprojectparser.KnxProjectFile;
+import io.guw.knxutils.knxprojectparser.GroupAddress;
+import io.guw.knxutils.knxprojectparser.KnxProjectFile;
 
 public class KnxProjectAnalyzer {
 

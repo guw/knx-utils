@@ -1,11 +1,11 @@
-package io.guw.knxopenhabutils.semanticanalyzer;
+package io.guw.knxutils.semanticanalyzer;
 
-import static io.guw.knxopenhabutils.knxprojectparser.DatapointType.ControlDimming;
-import static io.guw.knxopenhabutils.knxprojectparser.DatapointType.Scaling;
-import static io.guw.knxopenhabutils.knxprojectparser.GroupAddress.formatAsThreePartAddress;
-import static io.guw.knxopenhabutils.knxprojectparser.GroupAddress.getAddressPart1;
-import static io.guw.knxopenhabutils.knxprojectparser.GroupAddress.getAddressPart2;
-import static io.guw.knxopenhabutils.knxprojectparser.GroupAddress.getAddressPart3;
+import static io.guw.knxutils.knxprojectparser.DatapointType.ControlDimming;
+import static io.guw.knxutils.knxprojectparser.DatapointType.Scaling;
+import static io.guw.knxutils.knxprojectparser.GroupAddress.formatAsThreePartAddress;
+import static io.guw.knxutils.knxprojectparser.GroupAddress.getAddressPart1;
+import static io.guw.knxutils.knxprojectparser.GroupAddress.getAddressPart2;
+import static io.guw.knxutils.knxprojectparser.GroupAddress.getAddressPart3;
 import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
@@ -23,10 +23,10 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.guw.knxopenhabutils.knxprojectparser.DatapointType;
-import io.guw.knxopenhabutils.knxprojectparser.GroupAddress;
-import io.guw.knxopenhabutils.knxprojectparser.GroupAddressRange;
-import io.guw.knxopenhabutils.semanticanalyzer.luceneext.GermanAnalyzerWithDecompounder;
+import io.guw.knxutils.knxprojectparser.DatapointType;
+import io.guw.knxutils.knxprojectparser.GroupAddress;
+import io.guw.knxutils.knxprojectparser.GroupAddressRange;
+import io.guw.knxutils.semanticanalyzer.luceneext.GermanAnalyzerWithDecompounder;
 
 /**
  * Characteristics typically found in a KNX project using German language and

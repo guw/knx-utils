@@ -1,19 +1,19 @@
-package io.guw.knxopenhabutils.cli;
+package io.guw.knxutils.cli;
 
 import java.io.File;
 import java.util.concurrent.Callable;
 
-import io.guw.knxopenhabutils.knxprojectparser.KnxProjectFile;
-import io.guw.knxopenhabutils.semanticanalyzer.GenericGermanyKnxProjectCharacteristics;
-import io.guw.knxopenhabutils.semanticanalyzer.KnxProjectAnalyzer;
-import io.guw.knxopenhabutils.semanticanalyzer.KnxProjectCharacteristics;
+import io.guw.knxutils.knxprojectparser.KnxProjectFile;
+import io.guw.knxutils.semanticanalyzer.GenericGermanyKnxProjectCharacteristics;
+import io.guw.knxutils.semanticanalyzer.KnxProjectAnalyzer;
+import io.guw.knxutils.semanticanalyzer.KnxProjectCharacteristics;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 
 /**
- * Converts a knxproj file to a set of files for openHAB.
+ * Converts a knxproj file to a set of configuration files.
  */
 @Command(name = "knxconvert")
 public class KnxConvertCommand implements Callable<Void> {

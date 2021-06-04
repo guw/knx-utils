@@ -1,4 +1,4 @@
-package io.guw.knxopenhabutils.knxprojectparser;
+package io.guw.knxutils.knxprojectparser;
 
 import java.util.Collections;
 import java.util.HashMap;

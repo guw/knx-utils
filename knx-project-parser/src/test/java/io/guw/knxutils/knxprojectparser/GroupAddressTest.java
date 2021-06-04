@@ -1,8 +1,10 @@
-package io.guw.knxopenhabutils.knxprojectparser;
+package io.guw.knxutils.knxprojectparser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
+
+import io.guw.knxutils.knxprojectparser.GroupAddress;
 
 public class GroupAddressTest {
 

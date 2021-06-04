@@ -1,6 +1,6 @@
-package io.guw.knxopenhabutils.semanticanalyzer;
+package io.guw.knxutils.semanticanalyzer;
 
-import io.guw.knxopenhabutils.knxprojectparser.GroupAddress;
+import io.guw.knxutils.knxprojectparser.GroupAddress;
 
 public class DimmableLight extends Light {
 

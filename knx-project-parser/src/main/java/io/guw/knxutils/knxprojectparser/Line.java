@@ -1,17 +1,19 @@
-package io.guw.knxopenhabutils.knxprojectparser;
+package io.guw.knxutils.knxprojectparser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Area {
+public class Line {
 
+	private final Area area;
 	private final String id;
 	private final String address;
 	private final String name;
 	private final String description;
-	private final List<Line> lines = new ArrayList<>();
+	private final List<Device> devices = new ArrayList<>();
 
-	public Area(String id, String address, String name, String description) {
+	public Line(Area area, String id, String address, String name, String description) {
+		this.area = area;
 		this.id = id;
 		this.address = address;
 		this.name = name;
@@ -22,16 +24,20 @@ public class Area {
 		return address;
 	}
 
+	public Area getArea() {
+		return area;
+	}
+
 	public String getDescription() {
 		return description;
 	}
 
-	public String getId() {
-		return id;
+	public List<Device> getDevices() {
+		return devices;
 	}
 
-	public List<Line> getLines() {
-		return lines;
+	public String getId() {
+		return id;
 	}
 
 	public String getName() {
@@ -40,7 +46,7 @@ public class Area {
 
 	@Override
 	public String toString() {
-		return "Area [id=" + id + ", address=" + address + "]";
+		return "Line [id=" + id + ", address=" + address + "]";
 	}
 
 }

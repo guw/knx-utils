@@ -1,13 +1,13 @@
-package io.guw.knxopenhabutils.semanticanalyzer;
+package io.guw.knxutils.semanticanalyzer;
 
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.guw.knxopenhabutils.knxprojectparser.CommunicationObject;
-import io.guw.knxopenhabutils.knxprojectparser.DatapointType;
-import io.guw.knxopenhabutils.knxprojectparser.GroupAddress;
+import io.guw.knxutils.knxprojectparser.CommunicationObject;
+import io.guw.knxutils.knxprojectparser.DatapointType;
+import io.guw.knxutils.knxprojectparser.GroupAddress;
 
 /**
  * The characteristics of a KNX project.

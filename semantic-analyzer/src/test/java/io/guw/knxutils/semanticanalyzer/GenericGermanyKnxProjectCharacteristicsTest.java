@@ -1,8 +1,8 @@
-package io.guw.knxopenhabutils.semanticanalyzer;
+package io.guw.knxutils.semanticanalyzer;
 
-import static io.guw.knxopenhabutils.knxprojectparser.DatapointType.State;
-import static io.guw.knxopenhabutils.knxprojectparser.DatapointType.Switch;
-import static io.guw.knxopenhabutils.knxprojectparser.GroupAddress.getCombindedAddress;
+import static io.guw.knxutils.knxprojectparser.DatapointType.State;
+import static io.guw.knxutils.knxprojectparser.DatapointType.Switch;
+import static io.guw.knxutils.knxprojectparser.GroupAddress.getCombindedAddress;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,8 +17,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import io.guw.knxopenhabutils.knxprojectparser.GroupAddress;
-import io.guw.knxopenhabutils.knxprojectparser.GroupAddressRange;
+import io.guw.knxutils.knxprojectparser.GroupAddress;
+import io.guw.knxutils.knxprojectparser.GroupAddressRange;
+import io.guw.knxutils.semanticanalyzer.GenericGermanyKnxProjectCharacteristics;
 
 public class GenericGermanyKnxProjectCharacteristicsTest {
 

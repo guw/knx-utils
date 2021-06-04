@@ -1,4 +1,4 @@
-package io.guw.knxopenhabutils.knxprojectparser;
+package io.guw.knxutils.knxprojectparser;
 
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;

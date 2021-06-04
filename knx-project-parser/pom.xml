@@ -14,7 +14,7 @@
   <artifactId>knx-project-parser</artifactId>
   <packaging>jar</packaging>
 
-  <name>KNX OpenHAB Utils :: KNX Project Parser</name>
+  <name>KNX Utils :: KNX Project Parser</name>
 
   <dependencies>
     <dependency>

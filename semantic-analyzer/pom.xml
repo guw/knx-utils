@@ -13,7 +13,7 @@
 
   <artifactId>semantic-analyzer</artifactId>
 
-  <name>KNX OpenHAB Utils :: Semantic Analyzer</name>
+  <name>KNX Utils :: Semantic Analyzer</name>
 
   <dependencies>
     <dependency>
@@ -64,7 +64,7 @@
                 </goals>
                 <configuration>
                   <url>https://raw.githubusercontent.com/uschindler/german-decompounder/master/de_DR.xml</url>
-                  <outputDirectory>${project.basedir}/src/main/resources/io/guw/knxopenhabutils/semanticanalyzer/luceneext/</outputDirectory>
+                  <outputDirectory>${project.basedir}/src/main/resources/io/guw/knxutils/semanticanalyzer/luceneext/</outputDirectory>
                 </configuration>
               </execution>
               <execution>
@@ -75,7 +75,7 @@
                 </goals>
                 <configuration>
                   <url>https://raw.githubusercontent.com/uschindler/german-decompounder/master/dictionary-de.txt</url>
-                  <outputDirectory>${project.basedir}/src/main/resources/io/guw/knxopenhabutils/semanticanalyzer/luceneext/</outputDirectory>
+                  <outputDirectory>${project.basedir}/src/main/resources/io/guw/knxutils/semanticanalyzer/luceneext/</outputDirectory>
                 </configuration>
               </execution>
             </executions>

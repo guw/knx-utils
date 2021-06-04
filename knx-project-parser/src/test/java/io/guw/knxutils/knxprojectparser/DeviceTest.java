@@ -1,9 +1,13 @@
-package io.guw.knxopenhabutils.knxprojectparser;
+package io.guw.knxutils.knxprojectparser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
+
+import io.guw.knxutils.knxprojectparser.Area;
+import io.guw.knxutils.knxprojectparser.Device;
+import io.guw.knxutils.knxprojectparser.Line;
 
 public class DeviceTest {
 
