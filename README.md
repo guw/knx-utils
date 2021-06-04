@@ -19,7 +19,7 @@ mvn clean verify
 
 2. Open in your favorite IDE (eg., in Eclipse via *File > Import... > Existing Maven Projects*, point *Root Directory* to `knx-utils`)
 
-3. Run `knx-utils/cli/src/main/java/io/guw/knxopenhabutils/cli/KnxConvertCommand.java` with its `main` method
+3. Run `knx-utils/cli/src/main/java/io/guw/knxutils/cli/KnxConvertCommand.java` with its `main` method
 
 ```
 java -jar cli/target/knx-utils-cli.jar
