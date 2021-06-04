@@ -101,7 +101,6 @@ public class GroupAddress {
 
 	@Override
 	public String toString() {
-		return address + " [" + name + ", dpt=" + datapointType + "]";
+		return address + " [" + "dpt " + datapointType + "]";
 	}
-
 }

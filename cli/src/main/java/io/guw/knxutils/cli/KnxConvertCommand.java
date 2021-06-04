@@ -38,6 +38,8 @@ public class KnxConvertCommand implements Callable<Void> {
 		KnxProjectAnalyzer analyzer = new KnxProjectAnalyzer(knxProjectFile, characteristics);
 		analyzer.analyze();
 
+		analyzer.getLights().forEach(System.out::println);
+
 		return null;
 	}
 }

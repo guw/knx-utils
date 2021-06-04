@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 
 import io.guw.knxutils.knxprojectparser.GroupAddress;
 import io.guw.knxutils.knxprojectparser.GroupAddressRange;
-import io.guw.knxutils.semanticanalyzer.GenericGermanyKnxProjectCharacteristics;
 
 public class GenericGermanyKnxProjectCharacteristicsTest {
 
@@ -157,9 +156,8 @@ public class GenericGermanyKnxProjectCharacteristicsTest {
 	}
 
 	@Test
-	public void isMatchingStatus() throws Exception {
-		assertTrue(
-				characteristics.isMatchingStatus(gaWithName("Licht Küche Status"), gaWithName("Licht Küche Ein/Aus")));
+	public void isMatchOnName() throws Exception {
+		assertTrue(characteristics.isMatchOnName(gaWithName("Licht Küche Status"), gaWithName("Licht Küche Ein/Aus")));
 	}
 
 	@Test

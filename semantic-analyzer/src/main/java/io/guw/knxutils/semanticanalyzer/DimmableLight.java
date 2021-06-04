@@ -30,7 +30,8 @@ public class DimmableLight extends Light {
 
 	@Override
 	public String toString() {
-		return "DimmableLight (" + getPrimarySwitchGroupAddress() + ")";
+		return "DimmableLight (" + getPrimarySwitchGroupAddress() + ", status: " + getStatusGroupAddress() + ", dim: "
+				+ dimGa + ", brightness: " + brightnessGa + ", brightnessStatus: " + brightnessStatusGa + ")";
 	}
 
 }

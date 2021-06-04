@@ -34,7 +34,7 @@ public class KnxProjectAnalyzer {
 		groupAddresses.forEach(characteristics::fillInMissingInformation);
 
 		// sanity check
-		if (((float) characteristics.getWarnings() / (float) groupAddresses.size()) > 0.25F) {
+		if (((float) characteristics.getWarnings() / (float) groupAddresses.size()) > 0.10F) {
 			LOG.warn("The project data generated a lot of warnings. Please consider improving the ETS data.");
 		}
 
@@ -52,9 +52,6 @@ public class KnxProjectAnalyzer {
 		// build potential lights
 		primaryLightGroupAddresses.forEach(this::analyzeLight);
 
-		System.out.println("Lights:");
-		lights.forEach(System.out::println);
-
 		// find shutters
 
 	}
@@ -62,6 +59,7 @@ public class KnxProjectAnalyzer {
 	private void analyzeLight(GroupAddress ga) {
 		GroupAddress statusGa = characteristics.findMatchingStatusGroupAddress(ga);
 		if (statusGa == null) {
+			LOG.debug("Unable to find matching status GA for GA {} ({})", ga, ga.getName());
 			return;
 		}
 
@@ -83,5 +81,9 @@ public class KnxProjectAnalyzer {
 
 	public KnxProjectFile getKnxProjectFile() {
 		return knxProjectFile;
+	}
+
+	public List<Light> getLights() {
+		return lights;
 	}
 }

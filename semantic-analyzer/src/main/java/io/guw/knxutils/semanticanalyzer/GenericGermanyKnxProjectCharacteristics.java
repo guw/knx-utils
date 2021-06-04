@@ -6,12 +6,14 @@ import static io.guw.knxutils.knxprojectparser.GroupAddress.formatAsThreePartAdd
 import static io.guw.knxutils.knxprojectparser.GroupAddress.getAddressPart1;
 import static io.guw.knxutils.knxprojectparser.GroupAddress.getAddressPart2;
 import static io.guw.knxutils.knxprojectparser.GroupAddress.getAddressPart3;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -70,6 +72,41 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 		return (ga.getDescription() != null) && ga.getDescription().contains(tag);
 	}
 
+	/**
+	 * Returns potential candidates of a block.
+	 * <p>
+	 * Note, the returned list does not include the
+	 * <code>startingGroupAddress</code>. Thus, it is guaranteed to has a maximum
+	 * size of <code>blockLength - 1</code>. For example is start address is
+	 * <code>1/0/0</code>,
+	 * the result will contain <code>1/0/1</code>, <code>1/0/2</code>,
+	 * <code>1/0/3</code> and <code>1/0/4</code>, assuming their names
+	 * are similar enough.
+	 * </p>
+	 *
+	 * @param startingGroupAddress a start address
+	 * @param blockLength          the block length
+	 * @return the candidates of a potential block with maximum block length as
+	 *         specified, excluding the given start address
+	 */
+	private List<GroupAddress> findGroupAddressBlockCandidates(GroupAddress startingGroupAddress, int blockLength) {
+		List<GroupAddress> block = new ArrayList<>(blockLength);
+		for (int i = 1; i < blockLength; i++) {
+			GroupAddress candidate = groupAddressByThreePartAddress
+					.get(GroupAddress.formatAsThreePartAddress(startingGroupAddress.getAddressInt() + i));
+			if (candidate != null) {
+				if (!isMatchOnName(candidate, startingGroupAddress)) {
+					LOG.debug(
+							"Project doesn't seem to use expected block structure. Insignificant name matching for GA {} (with name '{}') and candidate GA {} with name '{}'.",
+							startingGroupAddress, startingGroupAddress.getName(), candidate, candidate.getName());
+					return block;
+				}
+				block.add(candidate);
+			}
+		}
+		return block;
+	}
+
 	@Override
 	public GroupAddress findMatchingBrightnessGroupAddress(GroupAddress primarySwitchGroupAddress) {
 		// pattern 1: assume GAs a created as blocks of 5 GAs (0=OnOff, 1=Dim, 2=Value, 3=StatusOnOff, 4=StatusValue)
@@ -123,18 +160,21 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 
 	@Override
 	public GroupAddress findMatchingStatusGroupAddress(GroupAddress primarySwitchGroupAddress) {
-
 		// preselect based on common patterns
-
-		// pattern 1: assume GAs a created as blocks of 5 GAs (0=OnOff, 1=Dim, 2=Value, 3=StatusOnOff, 4=StatusValue)
-		// TODO: this should be configurable
-		GroupAddress candidate = groupAddressByThreePartAddress
-				.get(GroupAddress.formatAsThreePartAddress(primarySwitchGroupAddress.getAddressInt() + 3));
-		if (candidate != null) {
-			LOG.debug("Evaluating potential candidate for GA {}: {}", primarySwitchGroupAddress, candidate);
-			if (isMatchingStatus(candidate, primarySwitchGroupAddress)) {
+		List<GroupAddress> candidates = findGroupAddressBlockCandidates(primarySwitchGroupAddress, 5).stream()
+				.filter(ga -> DatapointType.findByKnxProjectValue(ga.getDatapointType()) == DatapointType.State)
+				.collect(toList());
+		if (!candidates.isEmpty()) {
+			if (candidates.size() == 1) {
+				GroupAddress candidate = candidates.get(0);
+				LOG.debug("Found matching status for GA {}: {}", primarySwitchGroupAddress, candidate);
 				return candidate;
 			}
+			LOG.warn("Project is ambiguous. Found multiple matches with DPT {} for GA {}: {}", DatapointType.State,
+					primarySwitchGroupAddress, candidates.stream().map(GroupAddress::toString).collect(joining(", ")));
+		} else {
+			LOG.debug("No candidate indentified with DPT {} based on block pattern for GA {}", DatapointType.State,
+					primarySwitchGroupAddress);
 		}
 
 		// pattern 2: status GA is in a different range
@@ -152,10 +192,11 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 				part3 = getAddressPart3(primarySwitchGroupAddress.getAddressInt());
 			}
 			String potentialStatusGa = formatAsThreePartAddress(part1, part2, part3);
-			candidate = groupAddressByThreePartAddress.get(potentialStatusGa);
+			GroupAddress candidate = groupAddressByThreePartAddress.get(potentialStatusGa);
 			if (candidate != null) {
 				LOG.debug("Evaluating potential candidate for GA {}: {}", primarySwitchGroupAddress, candidate);
-				if (isMatchingStatus(candidate, primarySwitchGroupAddress)) {
+				if (isMatchOnNameAndDpt(candidate, primarySwitchGroupAddress, DatapointType.State)) {
+					LOG.debug("Found matching status for GA {}: {}", primarySwitchGroupAddress, candidate);
 					return candidate;
 				}
 			}
@@ -166,7 +207,7 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 	}
 
 	Set<String> getTerms(String text) throws IOException {
-		Set<String> terms = new HashSet<>();
+		Set<String> terms = new LinkedHashSet<>(); // make sure we maintain order
 		try (TokenStream ts = germanAnalyzer.tokenStream("", text)) {
 			CharTermAttribute charTermAttribute = ts.addAttribute(CharTermAttribute.class);
 			ts.reset();
@@ -221,33 +262,24 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 				|| descriptionContainsTag(ga, "[Licht]");
 	}
 
-	boolean isMatchingStatus(GroupAddress candidate, GroupAddress primarySwitchGroupAddress) {
+	boolean isMatchOnName(GroupAddress candidate, GroupAddress ga) {
 		// prefix match
 		// TODO: this should be configurable
-		float prefixMatchRatio = calculatePrefixMatchRatio(candidate.getName(), primarySwitchGroupAddress.getName());
+		float prefixMatchRatio = calculatePrefixMatchRatio(candidate.getName(), ga.getName());
 		if (prefixMatchRatio <= 0.6F) {
-			LOG.debug("Prefix mismatch for candidate {} for primary {} (match {})", candidate,
-					primarySwitchGroupAddress, prefixMatchRatio);
+			LOG.debug(
+					"Prefix mismatch for candidate {} with name '{}' comparing to primary {} with name '{}' (match {})",
+					candidate, candidate.getName(), ga, ga.getName(), prefixMatchRatio);
 			return false;
 		}
 
-		// accept all 1-bit DPTs
-		if ((candidate.getDatapointType() == null) || candidate.getDatapointType().isBlank()) {
-			// TODO: this should be configurable
-			LOG.warn("Accepting candidate with missing DPT {}", candidate);
-			return true;
-		}
-		return candidate.getDatapointType().startsWith("1.");
+		return true;
 	}
 
 	boolean isMatchOnNameAndDpt(GroupAddress candidate, GroupAddress primarySwitchGroupAddress, DatapointType dpt,
 			DatapointType... dpts) {
 		// prefix match
-		// TODO: this should be configurable
-		float prefixMatchRatio = calculatePrefixMatchRatio(candidate.getName(), primarySwitchGroupAddress.getName());
-		if (prefixMatchRatio <= 0.6F) {
-			LOG.debug("Prefix mismatch for candidate {} for primary {} (match {})", candidate,
-					primarySwitchGroupAddress, prefixMatchRatio);
+		if (!isMatchOnName(candidate, primarySwitchGroupAddress)) {
 			return false;
 		}
 
@@ -263,7 +295,7 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 
 	@Override
 	public boolean isPrimarySwitch(GroupAddress ga) {
-		// pre-select based on super
+		// pre-select based on DPT
 		boolean isPotentialPrimary = super.isPrimarySwitch(ga);
 		if (!isPotentialPrimary) {
 			LOG.debug("Not a primary switch GA due to DPT mismatch: {}", ga);

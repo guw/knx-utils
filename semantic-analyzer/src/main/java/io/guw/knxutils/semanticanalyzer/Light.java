@@ -22,6 +22,6 @@ public class Light {
 
 	@Override
 	public String toString() {
-		return "Light (" + primarySwitchGroupAddress + ")";
+		return "Light (" + primarySwitchGroupAddress + ", status: " + statusGroupAddress + ")";
 	}
 }
