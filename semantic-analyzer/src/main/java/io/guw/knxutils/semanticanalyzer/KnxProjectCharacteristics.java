@@ -141,6 +141,20 @@ public abstract class KnxProjectCharacteristics {
 	 */
 	public abstract GroupAddress findMatchingStatusGroupAddress(GroupAddress primarySwitchGroupAddress);
 
+	/**
+	 * Returns the name of a GA without potentially functional qualifiers (eg.,
+	 * On/Off, etc.)
+	 * <p>
+	 * If additional GAs are provided the name will be verified to be a common match
+	 * for all GAs. However, heuristics may be applied to allow a majority to match.
+	 * </p>
+	 *
+	 * @param primaryGroupAddress      the primary group address
+	 * @param additionalGroupAddresses additional group address to verify against
+	 * @return the name
+	 */
+	public abstract String findName(GroupAddress primaryGroupAddress, GroupAddress... additionalGroupAddresses);
+
 	int getWarnings() {
 		return warnings;
 	}

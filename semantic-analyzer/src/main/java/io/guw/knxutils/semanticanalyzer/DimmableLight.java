@@ -8,9 +8,9 @@ public class DimmableLight extends Light {
 	private final GroupAddress brightnessGa;
 	private final GroupAddress brightnessStatusGa;
 
-	public DimmableLight(GroupAddress ga, GroupAddress statusGa, GroupAddress dimGa, GroupAddress brightnessGa,
-			GroupAddress brightnessStatusGa) {
-		super(ga, statusGa);
+	public DimmableLight(String name, GroupAddress ga, GroupAddress statusGa, GroupAddress dimGa,
+			GroupAddress brightnessGa, GroupAddress brightnessStatusGa) {
+		super(name, ga, statusGa);
 		this.dimGa = dimGa;
 		this.brightnessGa = brightnessGa;
 		this.brightnessStatusGa = brightnessStatusGa;

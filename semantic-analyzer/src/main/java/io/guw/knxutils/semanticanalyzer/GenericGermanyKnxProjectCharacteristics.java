@@ -206,6 +206,29 @@ public class GenericGermanyKnxProjectCharacteristics extends KnxProjectCharacter
 		return null;
 	}
 
+	@Override
+	public String findName(GroupAddress primaryGroupAddress, GroupAddress... additionalGroupAddresses) {
+		String name = primaryGroupAddress.getName();
+		START_AGAIN: if (additionalGroupAddresses != null) {
+			for (GroupAddress ga : additionalGroupAddresses) {
+				if (!ga.getName().startsWith(name)) {
+					int lastSpace = name.lastIndexOf(' ');
+					if (lastSpace > 0) {
+						name = name.substring(0, lastSpace);
+						break START_AGAIN;
+					} else if (name.length() > 0) {
+						name = name.substring(0, name.length() - 1);
+						break START_AGAIN;
+					} else {
+						// give up, no common name
+						return primaryGroupAddress.getName();
+					}
+				}
+			}
+		}
+		return name;
+	}
+
 	Set<String> getTerms(String text) throws IOException {
 		Set<String> terms = new LinkedHashSet<>(); // make sure we maintain order
 		try (TokenStream ts = germanAnalyzer.tokenStream("", text)) {

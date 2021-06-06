@@ -6,10 +6,16 @@ public class Light {
 
 	private final GroupAddress primarySwitchGroupAddress;
 	private final GroupAddress statusGroupAddress;
+	private final String name;
 
-	public Light(GroupAddress primarySwitchGroupAddress, GroupAddress statusGroupAddress) {
+	public Light(String name, GroupAddress primarySwitchGroupAddress, GroupAddress statusGroupAddress) {
+		this.name = name;
 		this.primarySwitchGroupAddress = primarySwitchGroupAddress;
 		this.statusGroupAddress = statusGroupAddress;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public GroupAddress getPrimarySwitchGroupAddress() {

@@ -68,10 +68,12 @@ public class KnxProjectAnalyzer {
 		GroupAddress brightnessStatusGa = characteristics.findMatchingBrightnessStatusGroupAddress(ga);
 		if ((dimGa != null) && (brightnessGa != null) && (brightnessStatusGa != null)) {
 			// use dimmable light
-			lights.add(new DimmableLight(ga, statusGa, dimGa, brightnessGa, brightnessStatusGa));
+			String name = characteristics.findName(ga, statusGa, dimGa, brightnessGa, brightnessStatusGa);
+			lights.add(new DimmableLight(name, ga, statusGa, dimGa, brightnessGa, brightnessStatusGa));
 		} else {
 			// go with simple light
-			lights.add(new Light(ga, statusGa));
+			String name = characteristics.findName(ga, statusGa);
+			lights.add(new Light(name, ga, statusGa));
 		}
 	}
 
